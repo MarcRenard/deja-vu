@@ -1,0 +1,15 @@
+# Dashboard Éco-Évaluation - Requirements Phase 1
+# Version: 1.0.0
+
+# Framework principal
+streamlit>=1.28.0
+
+# Gestion des données
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Visualisation
+plotly>=5.17.0
+
+# Utilitaires de base
+python-dateutil>=2.8.0
