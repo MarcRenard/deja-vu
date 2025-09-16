@@ -1,6 +1,6 @@
 """
 Configuration des critères d'évaluation environnementale et éco-sociale
-Basée sur le document de référence fourni
+Basée sur le document de référence fourni - VERSION CORRIGÉE
 """
 
 from typing import Dict, List, Any
@@ -415,4 +415,95 @@ EVALUATION_CRITERIA = {
                         "scale_max": 10,
                         "scale_labels": {"1": "Non réplicable", "10": "Facilement réplicable"},
                         "required": False,
-                        "impact_level": Impact
+                        "impact_level": ImpactLevel.MEDIUM
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Configuration des unités et facteurs de conversion
+UNITS_CONFIG = {
+    "kg CO₂eq": {"factor": 1, "category": "carbon"},
+    "litres": {"factor": 1, "category": "water"},
+    "kWh": {"factor": 1, "category": "energy"},
+    "km": {"factor": 1, "category": "distance"},
+    "kg": {"factor": 1, "category": "weight"},
+    "jours": {"factor": 1, "category": "time"},
+    "visiteurs": {"factor": 1, "category": "quantity"},
+    "nombre d'emplois": {"factor": 1, "category": "quantity"}
+}
+
+# Configuration des calculs selon les normes
+CALCULATION_METHODS = {
+    "carbon_footprint": {
+        "formula": "sum(quantity * emission_factor)",
+        "source": "ADEME Base Empreinte",
+        "unit": "kg CO₂eq"
+    },
+    "iso_14001_criticality": {
+        "formula": "(frequency * severity) / control",
+        "source": "ISO 14001",
+        "scale": "1-4"
+    },
+    "water_footprint": {
+        "formula": "sum(consumption + pollution_equivalent)",
+        "source": "Water Footprint Network",
+        "unit": "litres"
+    }
+}
+
+# Configuration des seuils de performance
+PERFORMANCE_THRESHOLDS = {
+    "carbon_footprint": {
+        "excellent": 1.0,    # kg CO₂eq par visiteur
+        "good": 2.0,
+        "average": 4.0,
+        "poor": 8.0
+    },
+    "recycling_rate": {
+        "excellent": 80,     # pourcentage
+        "good": 60,
+        "average": 40,
+        "poor": 20
+    },
+    "renewable_energy": {
+        "excellent": 80,     # pourcentage
+        "good": 60,
+        "average": 40,
+        "poor": 20
+    },
+    "local_sourcing": {
+        "excellent": 70,     # pourcentage
+        "good": 50,
+        "average": 30,
+        "poor": 10
+    }
+}
+
+def get_questions_by_category(category: str) -> Dict[str, Any]:
+    """Récupérer les questions d'une catégorie spécifique"""
+    if category in EVALUATION_CRITERIA:
+        return EVALUATION_CRITERIA[category]
+    return {}
+
+def get_all_questions() -> Dict[str, Any]:
+    """Récupérer toutes les questions"""
+    return EVALUATION_CRITERIA
+
+def get_question_count() -> Dict[str, int]:
+    """Compter le nombre de questions par catégorie"""
+    counts = {}
+    total = 0
+
+    for category_key, category in EVALUATION_CRITERIA.items():
+        category_count = 0
+        for subcategory in category.get("subcategories", {}).values():
+            category_count += len(subcategory.get("questions", {}))
+
+        counts[category_key] = category_count
+        total += category_count
+
+    counts["total"] = total
+    return counts

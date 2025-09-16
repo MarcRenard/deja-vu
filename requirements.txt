@@ -1,15 +1,21 @@
-# Dashboard Éco-Évaluation - Requirements Phase 1
-# Version: 1.0.0
+# Dashboard Éco-Évaluation - Requirements compatibles
+# Version: 1.1.0 - Résolution conflit NumPy
 
 # Framework principal
-streamlit>=1.28.0
+streamlit>=1.28.0,<2.0.0
 
-# Gestion des données
-pandas>=2.1.0
-numpy>=1.24.0
+# Gestion et validation des données - Versions compatibles
+pandas>=1.5.0,<3.0.0
+numpy>=1.21.0,<2.0.0  # Forcer NumPy 1.x pour compatibilité
+pydantic>=2.0.0,<3.0.0
 
 # Visualisation
-plotly>=5.17.0
+plotly>=5.10.0,<6.0.0
 
-# Utilitaires de base
-python-dateutil>=2.8.0
+# Utilitaires
+python-dateutil>=2.8.0,<3.0.0
+
+# Validation
+validators>=0.18.0,<1.0.0
+
+# Pas de pyarrow explicite - laissé à pandas
